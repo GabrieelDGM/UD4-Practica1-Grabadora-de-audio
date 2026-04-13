@@ -23,4 +23,4 @@ Se creo la pantalla principal de la grabadora de voz.
 
 
 ## Captura de pantalla
-![Pantalla Inicial](../screens/RecorderVoice.tsx)
+![Pantalla Inicial](../../assets/images/imageDos.png)
