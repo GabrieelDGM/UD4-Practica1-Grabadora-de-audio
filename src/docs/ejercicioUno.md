@@ -17,11 +17,11 @@ Se realizo el diseño de la pantalla de grabacion con su contenido correspodient
 
 ### Pantalla Inicio Estado Normal.
 
-[Estado Normal](../../assets/images/imageDos.png)
+![Estado Normal](../../assets/images/imageDos.png)
 
 ## Pantalla Inicio Estado Grabando.
 
-[Estado Grabando](../../assets/images/imageTres.png)
+![Estado Grabando](../../assets/images/imageTres.png)
 
 
 
