@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
+import { useAudioRecorder, AudioModule, RecordingPresets } from 'expo-audio';
+
 import {
-    View,
-    Text,
-    TouchableOpacity,
-    ScrollView,
-    StyleSheet,
-} from 'react-native';
+    View, Text, TouchableOpacity, ScrollView, StyleSheet, Alert,
+}
+    from 'react-native';
 
 export default function RecordingScreen() {
-    
+
     const mockAudios = [1, 2, 3, 4, 5, 6];
     const [selected, setSelected] = useState<number[]>([]);
+    const [isRecording, setIsRecording] = useState(false);
+    const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
 
     const toggleSelect = (index: number) => {
         if (selected.includes(index)) {
@@ -20,6 +21,34 @@ export default function RecordingScreen() {
         }
     };
 
+    const startRecording = async () => {
+        const status = await AudioModule.requestRecordingPermissionsAsync();
+
+
+        if (!status.granted) {
+            Alert.alert('No tienes permiso', 'Necesitas dar permiso al micrófono.');
+            return;
+        }
+        setIsRecording(true);
+
+        try {
+            await audioRecorder.record();
+        } catch (error) {
+            console.log('error al grabar:', error);
+        }
+    };
+
+    const stopRecording = async () => {
+        try {
+            await audioRecorder.stop();
+        } catch (error) {
+            console.log('error al parar:', error);
+        }
+
+        setIsRecording(false);
+    };
+
+
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -28,18 +57,27 @@ export default function RecordingScreen() {
 
                 <Text style={styles.mic}>🎙️</Text>
 
-                {/* Buttons */}
                 <View style={styles.buttons}>
-                    <TouchableOpacity style={styles.greenBtn}>
-                        <Text style={styles.btnText}>▶ Iniciar</Text>
+
+                    <TouchableOpacity
+                        style={[styles.greenBtn, isRecording && styles.disabled]}
+                        onPress={startRecording}
+                        disabled={isRecording}
+                    >
+                        <Text style={styles.btnText}>
+                            {isRecording ? '▶ Grabando...' : '▶ Iniciar'}
+                        </Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.redBtn}>
+                    <TouchableOpacity
+                        style={[styles.redBtn, !isRecording && styles.disabled]}
+                        onPress={stopRecording}
+                        disabled={!isRecording}
+                    >
                         <Text style={styles.btnText}>Stop</Text>
                     </TouchableOpacity>
                 </View>
 
-                {/* Lista de audios */}
                 <Text style={styles.subtitle}>Lista de audios</Text>
 
                 {mockAudios.map((_, i) => (
@@ -59,7 +97,6 @@ export default function RecordingScreen() {
                     </View>
                 ))}
 
-                {/* Delete button */}
                 <TouchableOpacity style={[styles.redBtn, styles.deleteBtn]}>
                     <Text style={styles.btnText}>Eliminar</Text>
                 </TouchableOpacity>
@@ -68,7 +105,6 @@ export default function RecordingScreen() {
         </View>
     );
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -141,11 +177,14 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold'
     },
+    disabled: {
+        opacity: 0.5
+    },
     deleteBtn: {
         alignSelf: 'center',
         marginTop: 20,
         marginBottom: 30,
         paddingHorizontal: 30,
-        marginLeft:250
+        marginLeft: 250
     },
 });
