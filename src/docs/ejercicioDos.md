@@ -1,4 +1,4 @@
-# Ejercicio Dos - Implementacion del diseño.
+# Ejercicio 2 - Implementacion del diseño.
 
 ## Objetivo
 Se creo la pantalla principal de la grabadora de voz.
