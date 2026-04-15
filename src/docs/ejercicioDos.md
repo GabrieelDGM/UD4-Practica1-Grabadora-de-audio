@@ -24,3 +24,6 @@ Se creo la pantalla principal de la grabadora de voz.
 
 ## Captura de pantalla
 ![Pantalla Inicial](../../assets/images/imageDos.png)
+
+
+[Volver al README](../../README.md)
