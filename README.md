@@ -11,9 +11,9 @@ Esta aplicacion permite al usuario grabar audios desde su movil, guardardolos de
 
 # Documentacion de cada ejercicio.
 
-**1.- Diseño de Pantalla** ![Documento ejercicio 1](assets/images/Funcionalidad.png)
+**1.- Diseño de Pantalla** [Documento ejercicio 1](src/docs/ejercicioUno.md)
 
-**2.- App funcional** [Documennto ejercicio 2](src/docs/ejercicioDos.md)
+**2.- App funcional** [Documento ejercicio 2](src/docs/ejercicioDos.md)
 
 **3.- Permisos de micrófono** [Documento ejercicio 3](src/docs/ejercicioTres.md)
 
@@ -23,7 +23,7 @@ Esta aplicacion permite al usuario grabar audios desde su movil, guardardolos de
 
 **6.- Componente de animacion propio** [Documento ejercicio 6](src/docs/ejercicioSeis.md)
 
-## Estructura del proyecyto
+## Estructura del proyecto.
 
 ![Estructura del proyecto](assets/images/estructura.png)
 
@@ -31,7 +31,7 @@ Esta aplicacion permite al usuario grabar audios desde su movil, guardardolos de
 
 ![Tecnologia](assets/images/tecnologia.png)
 
-## Ejecuta el proyecto.
+## Ejecutar el proyecto.
 
 **Clonar Repositorio**  -> https://github.com/GabrieelDGM/UD4-Practica1-Grabadora-de-audio.git
 
