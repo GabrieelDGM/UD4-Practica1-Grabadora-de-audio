@@ -11,5 +11,5 @@ Cuando iniciamos la aplicacion los botones se ven de tamaño normal pero cuando 
 * useRef de React → para mantener el valor de la animación entre renders
 
 ## Video de animación propia.
-[!Video](../../assets/video/VIDEO-2026-04-15-09-54-57.mp4)
+![Gif](<../../assets/images/VIDEO-2026-04-15-09-54-57 (1).gif>)
 [Volver al README](../../README.md)
