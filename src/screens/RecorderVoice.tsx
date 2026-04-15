@@ -5,6 +5,7 @@ import { loadAudios, saveAudios } from '../services/Service';
 import * as FileSystem from 'expo-file-system/legacy';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { MaterialIcons } from '@expo/vector-icons';
+import AnimatedButton from '../components/AnimationBotton';
 
 export default function RecordingScreen() {
 
@@ -113,23 +114,19 @@ export default function RecordingScreen() {
                 {isRecording ? <LoadingSpinner /> : <MaterialIcons name="mic" size={100} color="black" style={styles.mic} />}
 
                 <View style={styles.buttons}>
-                    <TouchableOpacity
-                        style={[styles.greenBtn, isRecording && styles.disabled]}
+                    <AnimatedButton
+                        texto={isRecording ? '⏺ Grabando...' : '▶ Iniciar'}
+                        color="green"
                         onPress={startRecording}
                         disabled={isRecording}
-                    >
-                        <Text style={styles.btnText}>
-                            {isRecording ? '▶ Grabando...' : '▶ Iniciar'}
-                        </Text>
-                    </TouchableOpacity>
+                    />
 
-                    <TouchableOpacity
-                        style={[styles.redBtn, !isRecording && styles.disabled]}
+                    <AnimatedButton
+                        texto="⏹ Stop"
+                        color="red"
                         onPress={stopRecording}
                         disabled={!isRecording}
-                    >
-                        <Text style={styles.btnText}>Stop</Text>
-                    </TouchableOpacity>
+                    />
                 </View>
 
                 <Text style={styles.subtitle}>Lista de audios</Text>
