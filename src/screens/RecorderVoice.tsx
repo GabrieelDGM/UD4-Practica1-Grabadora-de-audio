@@ -3,6 +3,8 @@ import { useAudioRecorder, AudioModule, RecordingPresets, useAudioPlayer } from 
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Alert } from 'react-native';
 import { loadAudios, saveAudios } from '../services/Service';
 import * as FileSystem from 'expo-file-system/legacy';
+import LoadingSpinner from '../components/LoadingSpinner';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function RecordingScreen() {
 
@@ -10,6 +12,7 @@ export default function RecordingScreen() {
     const [selected, setSelected] = useState<number[]>([]);
     const [isRecording, setIsRecording] = useState(false);
     const [currentUri, setCurrentUri] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
     const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
     const player = useAudioPlayer(currentUri);
 
@@ -18,6 +21,7 @@ export default function RecordingScreen() {
         const getAudios = async () => {
             const savedAudios = await loadAudios();
             setAudios(savedAudios);
+            setIsLoading(false);
         };
         getAudios();
     }, []);
@@ -106,8 +110,7 @@ export default function RecordingScreen() {
             <ScrollView>
 
                 <Text style={styles.title}>Grabadora de voz</Text>
-
-                <Text style={styles.mic}>🎙️</Text>
+                {isRecording ? <LoadingSpinner /> : <MaterialIcons name="mic" size={100} color="black" style={styles.mic} />}
 
                 <View style={styles.buttons}>
                     <TouchableOpacity
@@ -130,26 +133,29 @@ export default function RecordingScreen() {
                 </View>
 
                 <Text style={styles.subtitle}>Lista de audios</Text>
+                {isLoading ? (
+                    <LoadingSpinner />
+                ) : (
+                    audios.map((uri, i) => (
+                        <View key={i} style={styles.audioRow}>
+                            <Text style={styles.audioName}>{i + 1}. Audio</Text>
 
-                {audios.map((uri, i) => (
-                    <View key={i} style={styles.audioRow}>
-                        <Text style={styles.audioName}>{i + 1}. Audio</Text>
+                            <TouchableOpacity
+                                style={styles.greenBtn}
+                                onPress={() => setCurrentUri(uri)}
+                            >
+                                <Text style={styles.btnText}>▶</Text>
+                            </TouchableOpacity>
 
-                        <TouchableOpacity
-                            style={styles.greenBtn}
-                            onPress={() => setCurrentUri(uri)}
-                        >
-                            <Text style={styles.btnText}>▶</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={[styles.checkbox, selected.includes(i) && styles.checkboxChecked]}
-                            onPress={() => toggleSelect(i)}
-                        >
-                            {selected.includes(i) && <Text style={styles.checkmark}>✓</Text>}
-                        </TouchableOpacity>
-                    </View>
-                ))}
+                            <TouchableOpacity
+                                style={[styles.checkbox, selected.includes(i) && styles.checkboxChecked]}
+                                onPress={() => toggleSelect(i)}
+                            >
+                                {selected.includes(i) && <Text style={styles.checkmark}>✓</Text>}
+                            </TouchableOpacity>
+                        </View>
+                    ))
+                )}
 
                 {audios.length > 0 && (
                     <TouchableOpacity
@@ -165,7 +171,8 @@ export default function RecordingScreen() {
             </ScrollView>
         </View>
     );
-}
+};
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -179,9 +186,9 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     mic: {
-        fontSize: 80,
         textAlign: 'center',
-        marginVertical: 10
+        marginVertical: 10,
+        alignSelf: 'center',
     },
     subtitle: {
         fontSize: 18,
@@ -248,4 +255,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
         marginLeft: 200
     },
+
 });
+
+
