@@ -12,4 +12,5 @@ Cuando iniciamos la aplicacion los botones se ven de tamaño normal pero cuando 
 
 ## Video de animación propia.
 ![Gif](<../../assets/images/VIDEO-2026-04-15-09-54-57 (1).gif>)
+
 [Volver al README](../../README.md)
