@@ -17,7 +17,6 @@ export default function RecordingScreen() {
     const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
     const player = useAudioPlayer(currentUri);
 
-    // Cargar audios guardados al abrir la app
     useEffect(() => {
         const getAudios = async () => {
             const savedAudios = await loadAudios();
@@ -27,7 +26,6 @@ export default function RecordingScreen() {
         getAudios();
     }, []);
 
-    // Reproducir audio
     useEffect(() => {
         if (currentUri) {
             player.play();
@@ -39,6 +37,14 @@ export default function RecordingScreen() {
             setSelected(selected.filter(i => i !== index));
         } else {
             setSelected([...selected, index]);
+        }
+    };
+
+    const toggleSelectAll = () => {
+        if (selected.length === audios.length) {
+            setSelected([]);
+        } else {
+            setSelected(audios.map((_, i) => i));
         }
     };
 
@@ -86,7 +92,6 @@ export default function RecordingScreen() {
         }
     };
 
-    // Eliminar audios seleccionados
     const deleteSelected = async () => {
         if (selected.length === 0) {
             Alert.alert('Aviso', 'Selecciona al menos un audio para eliminar.');
@@ -130,28 +135,48 @@ export default function RecordingScreen() {
                 </View>
 
                 <Text style={styles.subtitle}>Lista de audios</Text>
+
                 {isLoading ? (
                     <LoadingSpinner />
                 ) : (
-                    audios.map((uri, i) => (
-                        <View key={i} style={styles.audioRow}>
-                            <Text style={styles.audioName}>{i + 1}. Audio</Text>
-
+                    <>
+                        {audios.length > 0 && (
                             <TouchableOpacity
-                                style={styles.greenBtn}
-                                onPress={() => setCurrentUri(uri)}
+                                style={styles.selectAllRow}
+                                onPress={toggleSelectAll}
                             >
-                                <Text style={styles.btnText}>▶</Text>
+                                <Text style={styles.audioName}>Seleccionar todo los audios</Text>
+                                <View style={[
+                                    styles.checkbox,
+                                    selected.length === audios.length && styles.checkboxChecked
+                                ]}>
+                                    {selected.length === audios.length && (
+                                        <Text style={styles.checkmark}>✓</Text>
+                                    )}
+                                </View>
                             </TouchableOpacity>
+                        )}
 
-                            <TouchableOpacity
-                                style={[styles.checkbox, selected.includes(i) && styles.checkboxChecked]}
-                                onPress={() => toggleSelect(i)}
-                            >
-                                {selected.includes(i) && <Text style={styles.checkmark}>✓</Text>}
-                            </TouchableOpacity>
-                        </View>
-                    ))
+                        {audios.map((uri, i) => (
+                            <View key={i} style={styles.audioRow}>
+                                <Text style={styles.audioName}>{i + 1}. Audio</Text>
+
+                                <TouchableOpacity
+                                    style={styles.greenBtn}
+                                    onPress={() => setCurrentUri(uri)}
+                                >
+                                    <Text style={styles.btnText}>▶</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    style={[styles.checkbox, selected.includes(i) && styles.checkboxChecked]}
+                                    onPress={() => toggleSelect(i)}
+                                >
+                                    {selected.includes(i) && <Text style={styles.checkmark}>✓</Text>}
+                                </TouchableOpacity>
+                            </View>
+                        ))}
+                    </>
                 )}
 
                 {audios.length > 0 && (
@@ -221,6 +246,14 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#ddd'
     },
+    selectAllRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 10,
+        borderBottomWidth: 2,
+        borderBottomColor: '#aaa',
+        marginBottom: 4,
+    },
     audioName: {
         flex: 1,
         fontSize: 16
@@ -250,9 +283,5 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 30,
         paddingHorizontal: 30,
-        marginLeft: 200
     },
-
 });
-
-
