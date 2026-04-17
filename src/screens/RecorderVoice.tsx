@@ -134,7 +134,19 @@ export default function RecordingScreen() {
                     />
                 </View>
 
-                <Text style={styles.subtitle}>Lista de audios</Text>
+                <View style={styles.subtitleRow}>
+                    <Text style={styles.subtitle}>Lista de audios</Text>
+                    {audios.length > 0 && (
+                        <TouchableOpacity
+                            style={styles.redBtn}
+                            onPress={deleteSelected}
+                        >
+                            <Text style={styles.btnText}>
+                                {selected.length > 0 ? `Eliminar (${selected.length})` : 'Eliminar'}
+                            </Text>
+                        </TouchableOpacity>
+                    )}
+                </View>
 
                 {isLoading ? (
                     <LoadingSpinner />
@@ -179,17 +191,6 @@ export default function RecordingScreen() {
                     </>
                 )}
 
-                {audios.length > 0 && (
-                    <TouchableOpacity
-                        style={[styles.redBtn, styles.deleteBtn]}
-                        onPress={deleteSelected}
-                    >
-                        <Text style={styles.btnText}>
-                            {selected.length > 0 ? `Eliminar (${selected.length})` : 'Eliminar'}
-                        </Text>
-                    </TouchableOpacity>
-                )}
-
             </ScrollView>
         </View>
     );
@@ -212,11 +213,16 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         alignSelf: 'center',
     },
+    subtitleRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginTop: 20,
+        marginBottom: 10,
+    },
     subtitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        marginTop: 20,
-        marginBottom: 10
     },
     buttons: {
         flexDirection: 'row',
@@ -277,11 +283,5 @@ const styles = StyleSheet.create({
     },
     disabled: {
         opacity: 0.5
-    },
-    deleteBtn: {
-        alignSelf: 'center',
-        marginTop: 20,
-        marginBottom: 30,
-        paddingHorizontal: 30,
     },
 });
